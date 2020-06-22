@@ -3,15 +3,17 @@ import java.util.Scanner;
 //Based on: https://www.w3resource.com/java-exercises/method/java-method-exercise-11.php
 public class App {
 
-public static final int PASSWORD_LENGTH = 8;
+public static final int PASSWORD_LENGTH = 10;
 
 public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
         System.out.print(
-                "1. A password must have at least eight characters.\n" +
-                "2. A password consists of only letters and digits.\n" +
-                "3. A password must contain at least two digits \n" +
+                "1. A password must have at least ten characters.\n" +
+                "2. A password must contain at least two digits \n" +
+                "3. A password must contain at least one uppercase \n" +
+                "4. A password must contain at least one lowcase \n" +
+                "5. A passwword must contain EXACTLY one symbol  that cannot be at the beginning or at the end \n" +
                 "Input a password (You are agreeing to the above Terms and Conditions.): ");
         String s = input.nextLine();
 
@@ -27,19 +29,22 @@ public static void main(String[] args) {
 
         if (password.length() < PASSWORD_LENGTH) return false;
 
-        int charCount = 0;
-        int numCount = 0;
+        int numCount,upCount, lowCount, symCount;
+        numCount = upCount = lowCount = symCount = 0;
         for (int i = 0; i < password.length(); i++) {
 
             char ch = password.charAt(i);
 
             if (is_Numeric(ch)) numCount++;
-            else if (is_Letter(ch)) charCount++;
+            else if (is_Letter(ch))
+                if(Character.isUpperCase(password.charAt(i))) upCount++;
+                else lowCount++;
+            else if (!(i == 0 || i == password.length())) symCount++;
             else return false;
         }
 
 
-        return (charCount >= 1 && numCount >= 1);
+        return (upCount >= 1 && lowCount >= 1 && numCount >= 2 && symCount >= 1);
     }
 
     public static boolean is_Letter(char ch) {
